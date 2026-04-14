@@ -3,6 +3,7 @@ import pickle
 import joblib
 import os
 import pandas as pd
+import gdown
 
 st.set_page_config(page_title="Movie Recommender", layout="centered")
 
