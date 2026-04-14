@@ -12,27 +12,21 @@ st.title("🎬 Movie Recommendation System")
 
 @st.cache_resource
 def load_data():
-    try:
-        # Load similarity
-        if not os.path.exists("similarity.joblib"):
-            st.error("❌ similarity.joblib not found. Please generate it locally.")
-            return None, None
+    file_path = "similarity.joblib"
 
-        similarities = joblib.load("similarity.joblib")
+    # Download if not present
+    if not os.path.exists(file_path):
+        with st.spinner("Downloading similarity file..."):
+            url = "https://drive.google.com/uc?id=1oZSOJBcmcDpN31UTOZMr9uvkLIt_MoNC"
+            gdown.download(url, file_path, quiet=False)
 
-        # Load movies
-        if not os.path.exists("movies.pickle"):
-            st.error("❌ movies.pickle not found.")
-            return None, None
+    # Load files
+    similarities = joblib.load(file_path)
 
-        with open("movies.pickle", "rb") as f:
-            movies = pickle.load(f)
+    with open("movies.pickle", "rb") as f:
+        movies = pickle.load(f)
 
-        return similarities, movies
-
-    except Exception as e:
-        st.error(f"❌ Error loading files: {e}")
-        return None, None
+    return similarities, movies
 
 
 similarities, movies = load_data()
